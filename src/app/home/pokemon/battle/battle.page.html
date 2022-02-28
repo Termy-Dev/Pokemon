@@ -1,0 +1,64 @@
+<ion-content [fullscreen]="true">
+
+  <ion-grid *ngIf="load==false" class="ion-margin-top">
+    <ion-row class="ion-justify-content-center" size="6">
+      <ion-spinner name="bubbles"></ion-spinner>
+    </ion-row>
+    <ion-row class="ion-justify-content-center" size="6">
+      <ion-label>please wait</ion-label>
+    </ion-row>
+  </ion-grid>
+
+  <div class="background" *ngIf="load">
+    <a [routerLink]="['/home']" class="button">
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </a>
+    <div class="container-cpu">
+      <ion-label class="mainT"><strong>{{battlePokemon[1].name | titlecase}}</strong></ion-label>
+      <ion-progress-bar [value]="battlePokemon[1]?.statsBattle[0].value/battlePokemon[1]?.statsBase[0].value"
+        [style.--progress-background]="battlePokemon[1]?.statsBattle[0].value>(battlePokemon[1]?.statsBase[0].value*0.2) && battlePokemon[1]?.statsBattle[0].value<(battlePokemon[1]?.statsBase[0].value/2) ? '#FCE535' : 
+        battlePokemon[1]?.statsBattle[0].value<=(battlePokemon[1]?.statsBase[0].value*0.2) ? '#F85838' : null">
+      </ion-progress-bar>
+      <ion-label class="mainT">HP: {{battlePokemon[1]?.statsBattle[0].value}}/{{battlePokemon[1]?.statsBase[0].value}}</ion-label>
+    </div>
+    <div class="damage-cpu">
+      <ion-label class="text">{{textDamage[1]}}</ion-label>
+    </div>
+    <div class="image-cpu">
+      <img [src]="battlePokemon[1]?.imageUrl" class="size">
+    </div>
+    <div class="container-player">
+      <ion-label class="mainT"><strong>{{battlePokemon[0]?.name | titlecase}}</strong></ion-label>
+      <ion-progress-bar [value]="battlePokemon[0]?.statsBattle[0].value/battlePokemon[0]?.statsBase[0].value"
+      [style.--progress-background]="battlePokemon[0]?.statsBattle[0].value>(battlePokemon[0]?.statsBase[0].value*0.2) && battlePokemon[0]?.statsBattle[0].value<(battlePokemon[0]?.statsBase[0].value/2) ? '#FCE535' : 
+      battlePokemon[0]?.statsBattle[0].value<=(battlePokemon[0]?.statsBase[0].value*0.2) ? '#F85838' : null">
+      </ion-progress-bar>
+      <ion-label class="mainT">HP: {{battlePokemon[0]?.statsBattle[0].value}}/{{battlePokemon[0]?.statsBase[0].value}}</ion-label>
+    </div>
+    <div class="damage-player">
+      <ion-label class="text">{{textDamage[0]}}</ion-label>
+    </div>
+    <div class="image-player">
+      <img [src]="battlePokemon[0]?.imageUrl" class="size">
+    </div>
+  </div>
+  <ion-grid *ngIf="load">
+    <ion-row>
+      <ion-col size="5">
+        <h2>{{text}}</h2>
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-col size="6" class="ion-text-center" *ngFor="let item of battlePokemon[0]?.moves; let i=index">
+            <button (click)="attack(i)" [disabled]="!enabledButton">{{item?.name | titlecase}}</button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <audio autoplay>
+    <source src="../../../../assets/battle-song.ogg" type="audio/ogg">
+  </audio>
+
+</ion-content>

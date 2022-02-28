@@ -1,20 +1,72 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Pokedex</ion-title>
+      <ion-label slot="end">Dark</ion-label>
+      <ion-toggle slot="end" (ionChange)="toggleTheme($event)" class="toggle-small"></ion-toggle>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Pokedex</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-searchbar placeholder="search" [(ngModel)]="searchPokemon" animated></ion-searchbar>
+
+  <swiper>
+    <ng-template swiperSlide>
+      <ion-segment (ionChange)="segmentChanged($event)" swipe-gesture="false">
+        <div *ngFor="let item of gen; let i = index" class="display" >
+          <ion-segment-button [value]="i+1" layout="icon-start" *ngIf="i<3">
+            <ion-icon src="../../assets/icon/poke_gen.svg"></ion-icon>
+            <ion-label>{{item}} Gen</ion-label>
+        </ion-segment-button>
+        </div>
+      </ion-segment>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-segment (ionChange)="segmentChanged($event)" swipe-gesture="false">
+        <div *ngFor="let item of gen; let i = index" class="display">
+          <ion-segment-button [value]="i+1" layout="icon-start" *ngIf="i>2 && i<6">
+            <ion-icon src="../../assets/icon/poke_gen.svg"></ion-icon>
+            <ion-label>{{item}} Gen</ion-label>
+        </ion-segment-button>
+        </div>
+      </ion-segment>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-segment (ionChange)="segmentChanged($event)" swipe-gesture="false">
+        <div *ngFor="let item of gen; let i = index" >
+          <ion-segment-button [value]="i+1" layout="icon-start" *ngIf="i>5">
+            <ion-icon src="../../assets/icon/poke_gen.svg"></ion-icon>
+            <ion-label>{{item}} Gen</ion-label>
+        </ion-segment-button>
+        </div>
+      </ion-segment>
+    </ng-template>
+  </swiper>
+
+  <ion-grid *ngIf="load==false" class="ion-margin-top">
+    <ion-row class="ion-justify-content-center" size="6">
+      <ion-spinner name="bubbles"></ion-spinner>
+    </ion-row>
+    <ion-row class="ion-justify-content-center" size="6">
+      <ion-label>please wait</ion-label>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="load==true" class="ion-margin-top">
+    <ion-list *ngFor="let item of pokedex | filter:searchPokemon" lines="inset">
+      <ion-item button [routerLink]="openDetails(item.url)" detail>
+        <ion-avatar slot="start">
+          <img [src]="getImg(item.url)" />
+        </ion-avatar>
+        <ion-label>{{item.name | titlecase }} </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
+
+  
 </ion-content>

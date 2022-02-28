@@ -1,0 +1,112 @@
+.background
+{
+    background-image: url('../../../../assets/battle-background.jpeg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 300px;
+    z-index: 0;
+    position: relative;
+    border-bottom: 3px solid black;
+}
+
+.container-cpu
+{
+    position: absolute;
+    width: 180px;
+    height: 80px;
+    z-index: 2;
+    background-color: antiquewhite;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 5px;
+    left: 120px;
+    top: 10px;
+}
+
+ion-progress-bar{
+    margin: 8px 0;
+    height: 12px;
+    --background: white;
+    --progress-background:#63E79B;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+
+.damage-cpu{
+    position: absolute;
+    left: 380px;
+    top: 50px;
+}
+
+.text{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.image-cpu{
+    position: absolute;
+    left: 450px;
+    top: 5px;
+}
+
+.size{
+    height: 200px;
+    width: 200px;
+}
+
+.container-player
+{
+    position: absolute;
+    width: 180px;
+    height: 80px;
+    z-index: 2;
+    background-color: antiquewhite;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 5px;
+    left: 544px;
+    top: 210px;
+}
+
+.damage-player{
+    position: absolute;
+    left: 390px;
+    top: 180px;
+}
+
+.image-player{
+    position: absolute;
+    left: 180px;
+    top: 95px;
+
+}
+
+.button{
+    position: absolute;
+    left: 770px;
+    top:10px;
+}
+ion-icon{
+    width: 50px;
+    height: 50px;
+    color: #ADADAD;
+}
+
+.mainT{
+    color: black;
+}
+
+button{
+   border: 1px solid black;
+   border-radius: 15px;
+   height: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: white;
+   &:disabled{
+    background:linear-gradient(to right , #AED7B9 0%, #E4CD6F 100%); 
+    color: black;
+    }
+    
+}

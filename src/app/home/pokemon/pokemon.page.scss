@@ -1,0 +1,21 @@
+ ion-title.title-large {
+    font-size: 30px;
+  }
+
+  .text{
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .display{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .horizontal-align{
+    margin: 0 5px;
+  }
+
+  .vertical-align{
+    margin: auto 0;
+  }

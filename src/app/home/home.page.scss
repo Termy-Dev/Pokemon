@@ -25,3 +25,22 @@
 #container a {
   text-decoration: none;
 }
+
+.md .display{
+  width: 33.33%;
+}
+.ios ion-toggle{
+  margin-left: 10px;
+  margin-right: 16px;
+  height: 19px;
+  --handle-width: 15px;
+  --handle-height: 15px;
+  width: 35px;
+}
+ion-toggle{
+  --handle-background: #CDD2D8;
+  --handle-background-checked: #FFFFFF;
+
+  --background: #7D8793;
+  --background-checked: #DD9237;
+}

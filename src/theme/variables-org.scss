@@ -74,84 +74,15 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
-
-  .normal{
-    position:relative;
-    width: fit-content;
-    margin: 16px auto;
-  }
-
-  .normal::before{
-    content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  border-radius:50px; 
-  padding:5px; 
-  background:linear-gradient(to bottom right, #13C2E9 0%, #F64F5A 100%); 
-  mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude; 
-  }
-
-  .legendary{
-    position:relative;
-    width: fit-content;
-    margin: 16px auto;
-  }
-
-  .legendary::before{
-    content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  border-radius:50px; 
-  padding:5px; 
-  background:linear-gradient(to bottom right, #1F8F00 0%, #F2F800 50%, #FF2B00 100%); 
-  mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude; 
-  }
-
-  .mythical{
-    position:relative;
-    width: fit-content;
-    margin: 16px auto;
-  }
-
-  .mythical::before{
-    content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  border-radius:50px; 
-  padding:5px; 
-  background:linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%); 
-  mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude; 
-  }
 }
 
-
+@media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
    * -------------------------------------------
    */
 
-  body[color-theme='dark'] {
+  body {
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66,140,255;
     --ion-color-primary-contrast: #ffffff;
@@ -221,7 +152,7 @@
    * -------------------------------------------
    */
 
-  .ios body[color-theme='dark']{
+  .ios body {
     --ion-background-color: #000000;
     --ion-background-color-rgb: 0,0,0;
 
@@ -253,7 +184,7 @@
     --ion-card-background: #1c1c1d;
   }
 
-  .ios ion-modal[color-theme='dark']{
+  .ios ion-modal {
     --ion-background-color: var(--ion-color-step-100);
     --ion-toolbar-background: var(--ion-color-step-150);
     --ion-toolbar-border-color: var(--ion-color-step-250);
@@ -265,7 +196,7 @@
    * -------------------------------------------
    */
 
-  .md body[color-theme='dark']{
+  .md body {
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18,18,18;
 
@@ -302,4 +233,4 @@
 
     --ion-card-background: #1e1e1e;
   }
-
+}

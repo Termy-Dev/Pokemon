@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { Pokemon } from 'src/app/services/pokemon.model';
 import { PokemonService } from 'src/app/services/pokemon.service';
 import { getValue } from './battle.combination';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 interface BattlePokemon {
   name: string;
@@ -40,10 +41,13 @@ interface MovePokemon {
 
 export class BattlePage implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router, private pokedexService: PokemonService, private alertCtr: AlertController) {
+  constructor(private route: ActivatedRoute, private router: Router, private pokedexService: PokemonService, private alertCtr: AlertController, private screenOrientation: ScreenOrientation) {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
         this.setPokemon(this.router.getCurrentNavigation().extras.state.data, 0)
+      } else {
+        this.router.navigate(['/home']);
       }
     });
 
@@ -69,21 +73,15 @@ export class BattlePage implements OnInit {
   }
 
   setPokemon(pokemon: Pokemon, select: number) {
-    let stat: StatsPokemon[] = [];
-    pokemon.stats.map(item => stat.push({ value: item.base_stat, name: item.stat.name }))
-    let stat2: StatsPokemon[] = [];
-    pokemon.stats.map(item => stat2.push({ value: item.base_stat, name: item.stat.name }))
     this.battlePokemon[select] = {
       name: pokemon.name,
-      statsBase: stat,
+      statsBase: pokemon.stats.map(item => { return { value: item.base_stat, name: item.stat.name } }),
       isAlive: true,
-      statsBattle: stat2,
+      statsBattle: pokemon.stats.map(item => { return { value: item.base_stat, name: item.stat.name } }),
       imageUrl: pokemon.sprites.back_default,
       types: pokemon.types.map(item => item.type.name)
     }
-    if (select == 1) {
-      this.battlePokemon[select].imageUrl = pokemon.sprites.front_default
-    }
+    select == 1 && (this.battlePokemon[select].imageUrl = pokemon.sprites.front_default);
   }
 
   async selectMove(pokemon: Pokemon) {
@@ -96,25 +94,27 @@ export class BattlePage implements OnInit {
         let index = Math.floor(Math.random() * pokemon.moves.length);
         if (move.find(item => item.name === pokemon.moves[index].move.name) === undefined) {
           let moveDetail = await this.pokedexService.getPokemonMoveDetail(pokemon.moves[index].move.name);
-          moveDetail.stat_changes.length > 0 ? moveDetail.stat_changes.map(item => change.push({ name: item.stat.name, value: item.change })) : null;
-          move.push({
-            name: pokemon.moves[index].move.name,
-            power: moveDetail.power,
-            accuracy: moveDetail.accuracy,
-            type: moveDetail.type.name,
-            drain: moveDetail.meta.drain,
-            healing: moveDetail.meta.healing,
-            crit_rate: moveDetail.meta.crit_rate,
-            target: moveDetail.target.name,
-            stateChange: change
-          });
-          addMove++;
+          if (moveDetail.power != null || addMove > 1) {
+            moveDetail.stat_changes.length > 0 && (moveDetail.stat_changes.map(item => change.push({ name: item.stat.name, value: item.change })))
+            move.push({
+              name: pokemon.moves[index].move.name,
+              power: moveDetail.power,
+              accuracy: moveDetail.accuracy,
+              type: moveDetail.type.name,
+              drain: moveDetail.meta.drain,
+              healing: moveDetail.meta.healing,
+              crit_rate: moveDetail.meta.crit_rate,
+              target: moveDetail.target.name,
+              stateChange: change
+            });
+            addMove++;
+          }
         }
       } while (addMove < 4)
     } else {
       pokemon.moves.map(async item => {
         let moveDetail = await this.pokedexService.getPokemonMoveDetail(item.move.name);
-        moveDetail.stat_changes.length > 0 ? moveDetail.stat_changes.map(item => change.push({ name: item.stat.name, value: item.change })) : null;
+        moveDetail.stat_changes.length > 0 && (moveDetail.stat_changes.map(item => change.push({ name: item.stat.name, value: item.change })))
         move.push({
           name: item.move.name,
           power: moveDetail.power,
@@ -141,18 +141,18 @@ export class BattlePage implements OnInit {
       this.text = this.battlePokemon[select].name + " used " + this.battlePokemon[select].moves[index].name + "!";
       if (this.battlePokemon[select].moves[index].name != "transform") {
         if (this.attackOnTarget(select, index)) {
-          this.battlePokemon[select].moves[index].healing > 0 ? this.healingTarget(select, index) : null;
-          this.battlePokemon[select].moves[index].drain != 0 ? await this.drainTarget(select, index, turn) : null;
-          if (this.battlePokemon[turn].isAlive || this.battlePokemon[select].isAlive) {
-            this.battlePokemon[select].moves[index].power != null ? this.calcAttack(index, turn, select) : null;
-            this.battlePokemon[select].moves[index].stateChange.length > 0 ? this.changeState(index, turn, select) : null;
+          this.battlePokemon[select].moves[index].healing > 0 &&( this.healingTarget(select, index) )
+          this.battlePokemon[select].moves[index].drain != 0 &&( await this.drainTarget(select, index, turn))
+          this.battlePokemon[select].moves[index].power != null &&( this.calcAttack(index, turn, select) )
+          if (this.battlePokemon[select].isAlive || this.battlePokemon[turn].isAlive) {
+            this.battlePokemon[select].moves[index].stateChange.length > 0 && ( this.changeState(index, turn, select))
           } else {
-            this.battlePokemon[turn].isAlive==false ? await this.presentAlert(select) : await this.presentAlert(turn)
+            this.battlePokemon[turn].isAlive == false ? await this.presentAlert(select) : await this.presentAlert(turn)
             break;
           }
 
-        }else{
-          this.textDamage[turn]="Evaded";
+        } else {
+          this.textDamage[turn] = "Evaded"
         }
       }
       else {
@@ -162,9 +162,15 @@ export class BattlePage implements OnInit {
       this.textDamage[select] = "";
       this.textDamage[turn] = "";
       if (this.battlePokemon[turn].isAlive) {
-        index = Math.floor(Math.random() * this.battlePokemon[1].moves.length);
-        turn--;
-        select++;
+
+        if (turn == 1) {
+          turn--;
+          select++;
+          index = this.decisionMove(select);
+        } else {
+          select++;
+        }
+
       } else {
         await this.presentAlert(select);
         break;
@@ -173,6 +179,36 @@ export class BattlePage implements OnInit {
     } while (select < 2)
     this.enabledButton = true;
     this.text = "What Will " + this.battlePokemon[0].name + " do?";
+  }
+
+  decisionMove(select: number) {
+    let rankMoves: number[] = [];
+    const stateHp = this.battlePokemon[select - 1].statsBattle[0].value;
+    const hp = (stateHp / 100) * (Math.log2(stateHp / 100));
+    const { types } = { ...this.battlePokemon[select - 1] };
+    const { statsBattle, statsBase } = { ...this.battlePokemon[select] };
+    rankMoves = this.battlePokemon[select].moves.reduce(function (acc: number[], item: MovePokemon) {
+      let { accuracy, power, healing, drain, type } = { ...item };
+      let comb = getValue(type, types);
+      let rand = (Math.random() * 2) + 1;
+      accuracy != null ? accuracy = (accuracy / 100) * (Math.log2(accuracy / 100)) : accuracy = 1;
+      if (power != null) {
+        power = (power / 100) * (Math.log2(power / 100));
+      } else {
+        if (healing > 0 || drain != 0) {
+          if (statsBattle[0].value < stateHp && statsBattle[0].value <= (statsBase[0].value * 0.6)) {
+            healing > drain ? power = healing : power = drain;
+          } else {
+            drain != 0 ? power = drain : power = healing;
+          }
+        } else {
+          power = (10 / 100) * (Math.log2(10 / 100));
+        }
+      }
+      acc.push((hp + accuracy + power + rand + comb));
+      return acc;
+    }, [] as number[])
+    return rankMoves.indexOf(Math.max(...rankMoves));
   }
 
   calcAttack(index: number, turn: number, select: number) {
@@ -245,7 +281,6 @@ export class BattlePage implements OnInit {
     await new Promise(f => setTimeout(f, 1000));
   }
   changeState(index, turn, select) {
-    console.log(this.battlePokemon[select].moves[index].stateChange)
     if (this.battlePokemon[select].moves[index].target.includes("user") || this.battlePokemon[select].moves[index].target.includes("ally") || this.battlePokemon[select].moves[index].target.includes("allies")) {
       this.battlePokemon[select].moves[index].stateChange.map(item => this.battlePokemon[select].statsBattle.find(elem => {
         if (elem.name === item.name) elem.value = elem.value + item.value
@@ -259,6 +294,8 @@ export class BattlePage implements OnInit {
   }
 
   async presentAlert(winner: number) {
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    this.screenOrientation.unlock();
     let title, subTitle;
     if (winner == 0) {
       title = "You Win!";
@@ -273,6 +310,11 @@ export class BattlePage implements OnInit {
       buttons: ["OK"]
     });
     await alert.present();
+    this.router.navigate(['/home']);
+  }
+  toHome() {
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    this.screenOrientation.unlock();
     this.router.navigate(['/home']);
   }
 }

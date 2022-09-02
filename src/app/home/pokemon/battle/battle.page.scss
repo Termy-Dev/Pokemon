@@ -3,7 +3,7 @@
     background-image: url('../../../../assets/battle-background.jpeg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    height: 300px;
+    height: 75vh;
     z-index: 0;
     position: relative;
     border-bottom: 3px solid black;
@@ -12,20 +12,20 @@
 .container-cpu
 {
     position: absolute;
-    width: 180px;
-    height: 80px;
+    width: 22vw;
+    height: 22vh;
     z-index: 2;
     background-color: antiquewhite;
     border-radius: 8px;
     border: 1px solid black;
     padding: 5px;
-    left: 120px;
-    top: 10px;
+    left: 3vw;
+    top: 1vw;
 }
 
 ion-progress-bar{
-    margin: 8px 0;
-    height: 12px;
+    margin: 0.8vw 0;
+    height: 3.5vh;
     --background: white;
     --progress-background:#63E79B;
     border-radius: 20px;
@@ -34,79 +34,84 @@ ion-progress-bar{
 
 .damage-cpu{
     position: absolute;
-    left: 380px;
-    top: 50px;
+    left: 40vw;
+    top: 12vh;
 }
 
 .text{
     color: white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 6vh;
 }
 
 .image-cpu{
     position: absolute;
-    left: 450px;
-    top: 5px;
+    left: 55vw;
+    top: 3vh;
 }
 
 .size{
-    height: 200px;
-    width: 200px;
+    height: 45vh;
+    width: 45vh;
 }
 
 .container-player
 {
     position: absolute;
-    width: 180px;
-    height: 80px;
+    width: 22vw;
+    height: 22vh;
     z-index: 2;
     background-color: antiquewhite;
     border-radius: 8px;
     border: 1px solid black;
     padding: 5px;
-    left: 544px;
-    top: 210px;
+    left: 75vw;
+    top: 50vh;
 }
 
 .damage-player{
     position: absolute;
-    left: 390px;
-    top: 180px;
+    left: 47vw;
+    top: 50vh;
 }
 
 .image-player{
     position: absolute;
-    left: 180px;
-    top: 95px;
+    left: 20vw;
+    top: 28vh;
 
 }
 
 .button{
     position: absolute;
-    left: 770px;
-    top:10px;
+    left: 92vw;
+    top: 1vh;
 }
+
 ion-icon{
-    width: 50px;
-    height: 50px;
+    width: 12vh;
+    height: 12vh;
     color: #ADADAD;
 }
 
 .mainT{
+    font-size: 4vh;
     color: black;
+}
+
+.textMove{
+    font-size: 7vh;
 }
 
 button{
    border: 1px solid black;
    border-radius: 15px;
-   height: 25px;
-    font-size: 16px;
+   height: 6.8vh;
+    font-size: 5vh;
     font-weight: bold;
     background-color: white;
    &:disabled{
     background:linear-gradient(to right , #AED7B9 0%, #E4CD6F 100%); 
     color: black;
-    }
-    
+    } 
 }

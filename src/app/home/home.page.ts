@@ -33,15 +33,13 @@ export class HomePage implements OnInit {
     return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + url.split("/")[6] + ".png";
   }
 
-  toggleTheme(event)
-  {
-    event.detail.checked? document.body.setAttribute('color-theme','dark') :document.body.setAttribute('color-theme','light');
+  toggleTheme(event) {
+    event.detail.checked ? document.body.setAttribute('color-theme', 'dark') : document.body.setAttribute('color-theme', 'light');
   }
 
   async segmentChanged(ev: CustomEvent) {
-    
-    if(ev.detail.value!=undefined)
-    {
+
+    if (ev.detail.value != undefined) {
       this.load = false;
       this.pokedex = (await this.pokedexService.getPokedex(ev.detail.value)).pokemon_species;
       this.oreder()

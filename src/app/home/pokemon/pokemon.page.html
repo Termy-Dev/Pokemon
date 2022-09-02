@@ -33,7 +33,8 @@
     <ion-row class="ion-margin-top ion-justify-content-center">
       <ion-text class="text">{{pokemon?.name | uppercase }}</ion-text>
     </ion-row>
-    <ion-row class="ion-margin-top" [ngClass]="pokemonDescription?.is_legendary ? 'legendary' : (pokemonDescription?.is_mythical) ? 'mythical' :'normal'">
+    <ion-row class="ion-margin-top"
+      [ngClass]="pokemonDescription?.is_legendary ? 'legendary' : (pokemonDescription?.is_mythical) ? 'mythical' :'normal'">
       <img [src]="pokemon?.sprites.other['official-artwork'].front_default">
     </ion-row>
     <ion-row class="ion-margin-top ion-justify-content-center">
@@ -107,9 +108,6 @@
           [style.background-color]="changeColorGender()" color="danger"></ion-progress-bar>
       </ion-col>
     </ion-row>
-
-
   </ion-grid>
-
 
 </ion-content>
